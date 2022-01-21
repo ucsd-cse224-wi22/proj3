@@ -62,7 +62,7 @@ There are some utility functions defined in `pkg/tritonhttp/util.go` that you mi
 
 You can (and are encouraged to) extend the tests (both unit and e2e tests) for your local testing. We'll use the same testing framework for grading, just with different test cases.
 
-In terms of effort level, note that our solution involved writing 293 lines of new code (127 in server.go, 102 in request.go, and 64 in response.go)
+In terms of effort level, note that our solution involved writing 293 lines of new code (127 in server.go, 102 in request.go, and 64 in response.go).
 
 ## Usage
 
