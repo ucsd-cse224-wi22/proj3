@@ -34,14 +34,18 @@ func TestMain(m *testing.M) {
 	if err := serverCmd.Start(); err != nil {
 		log.Fatal(err)
 	}
-	defer serverCmd.Process.Kill()
 
 	// Wait a little bit for the server to set up.
 	// Otherwise we might get "connection refused".
 	time.Sleep(serverSetupTime * time.Second)
 
 	// Start running the test cases
-	os.Exit(m.Run())
+	code := m.Run()
+
+	// Kill the test server process
+	serverCmd.Process.Kill()
+
+	os.Exit(code)
 }
 
 func TestSingleRequest(t *testing.T) {
