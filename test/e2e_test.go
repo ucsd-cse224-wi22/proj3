@@ -2,7 +2,9 @@ package test
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -124,6 +126,9 @@ func TestSingleRequest(t *testing.T) {
 			if err := tt.resChecker.Check(br); err != nil {
 				t.Fatal(err)
 			}
+			if _, err := br.ReadByte(); !errors.Is(err, io.EOF) {
+				t.Fatalf("response has extra bytes when it should end")
+			}
 		})
 	}
 }
@@ -198,6 +203,9 @@ func TestPipelineRequest(t *testing.T) {
 				if err := resChecker.Check(br); err != nil {
 					t.Fatal(err)
 				}
+			}
+			if _, err := br.ReadByte(); !errors.Is(err, io.EOF) {
+				t.Fatalf("response has extra bytes when it should end")
 			}
 		})
 	}
@@ -277,6 +285,10 @@ func TestConcurrentRequest(t *testing.T) {
 					br := bufio.NewReader(f)
 					if err := spec.resChecker.Check(br); err != nil {
 						errChan <- err
+						return
+					}
+					if _, err := br.ReadByte(); !errors.Is(err, io.EOF) {
+						errChan <- fmt.Errorf("response has extra bytes when it should end")
 						return
 					}
 					errChan <- nil
