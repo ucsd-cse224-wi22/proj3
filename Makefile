@@ -1,7 +1,7 @@
 .PHONY: install
 install:
 	rm -rf bin
-	GOBIN=$(PWD)/bin go install ./...
+	GOBIN="$(PWD)/bin" go install ./...
 
 .PHONY: run-default
 run-default:
@@ -18,7 +18,7 @@ unit-test:
 .PHONY: e2e-test
 e2e-test:
 	rm -rf test/_bin
-	GOBIN=$(PWD)/test/_bin go install ./...
+	GOBIN="$(PWD)/test/_bin" go install ./...
 	go test -v ./test/...
 
 .PHONY: fmt
